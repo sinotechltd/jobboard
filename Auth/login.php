@@ -4,7 +4,10 @@
 ?>
 
 <?php
+if(isset($_SESSION['username'])){
 
+  header("location: ".APPURL."");
+}
 if(isset($_POST['submit'])){
     if(empty($_POST['email']) OR empty($_POST['password']) ){
     echo"<script>alert('some inputs are empty')</script>";
@@ -31,7 +34,7 @@ if(isset($_POST['submit'])){
         $_SESSION['id']= $select['id'];
         $_SESSION['type']= $select['type'];
 
-        header("loaction: ".APPURL."");
+        header("location: ".APPURL."");
 
     }else {
         echo "<script>alert('invalid user')</script>";

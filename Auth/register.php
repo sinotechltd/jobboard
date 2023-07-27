@@ -5,7 +5,10 @@
   
    ?>
    <?php
-   
+   if(isset($_SESSION['username'])){
+
+    header("location: ".APPURL."");
+  }
   if(isset($_POST['submit'])){
     if(empty($_POST['username']) OR empty($_POST['password']) OR empty($_POST['re-password'])){
     echo"<script>alert('some inputs are empty')</script>";
@@ -73,12 +76,13 @@
                   <label class="text-black" for="fname">Email</label>
                   <input type="text" id="fname" class="form-control" placeholder="Email address" name="email">
                 </div>
-                <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
-                  <select name="type" class="selectpicker" data-style="btn-white btn-lg" data-width="100%" data-live-search="true" title="Select User Type">
-                    <option>Employee</option>
-                    <option>Company</option>
-                  </select>
-                </div>
+                <div class="form-group">
+                <label for="job-type">User Type</label>
+                <select name="type" class="selectpicker border rounded" id="user-type" data-style="btn-black" data-width="100%" data-live-search="true" title="Select User Type">
+                  <option>Worker</option>
+                  <option>Company</option>
+                </select>
+              </div>
 
               </div>
               <div class="row form-group">
