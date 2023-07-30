@@ -1,5 +1,6 @@
 
 <?php 
+<<<<<<< Updated upstream
   require "../config/config.php";
    require "../includes/header.php";
   
@@ -8,8 +9,19 @@
    
   if(isset($_POST['submit'])){
     if(empty($_POST['username']) OR empty($_POST['password']) OR empty($_POST['re-password'])){
+=======
+require "../config/config.php";
+require "../includes/header.php";
+
+if(isset($_SESSION['username'])){
+  header("location: ".APPURL."");
+}
+
+if(isset($_POST['submit'])){
+  if(empty($_POST['username']) OR empty($_POST['password']) OR empty($_POST['re-password'])){
+>>>>>>> Stashed changes
     echo"<script>alert('some inputs are empty')</script>";
-  }else {
+  } else {
     $username= $_POST['username'];
     $email= $_POST['email'];
     $password= $_POST['password'];
@@ -17,29 +29,42 @@
     $img= 'web-coding.png';
     $type= $_POST['type'];
 
-    if($password== $repassword){
+    if($password == $repassword){
+      if(strlen($email) > 22 OR strlen($username)>15){
+        echo"<script>alert('email or username is too big')</script>";
+      } else{
+       
+        // checking for username or password availability
+        $validate= $conn->query("SELECT * FROM users WHERE email='$email' OR username= '$username'");
+        $validate->execute();
 
-      $insert= $conn->prepare("INSERT INTO users (username, email, mypassword, img,type) VALUES (:username, :email, :mypassword, :img, :type)");
+        if($validate->rowcount()>0){
+          echo"<script>alert('email or username is already taken')</script>";
 
+        }else{
 
-      $insert->execute([
-        ':username' => $username,
-        ':email' => $email,
-        ':mypassword' => password_hash($password, PASSWORD_DEFAULT),
-        ':img' => $img,
-        ':type'=>$type,
-      ]); 
+          $insert = $conn->prepare("INSERT INTO users (username, email, mypassword, img, type) VALUES (:username, :email, :mypassword, :img, :type)");
 
-      header("location: login.php");
+          $insert->execute([
+            ':username' => $username,
+            ':email' => $email,
+            ':mypassword' => password_hash($password, PASSWORD_DEFAULT),
+            ':img' => $img,
+            ':type' => $type,
+          ]); 
+  
+          header("location: login.php");
+        }
 
+        }
+
+       
     } else {
       echo"<script>alert('passwords dont match')</script>";
     }
-
   }
 }
-   
-   ?>
+?>
    
     <!-- HOME -->
     <section class="section-hero overlay inner-page bg-image" style="background-image: url('../images/hero_1.jpg');" id="home-section">
